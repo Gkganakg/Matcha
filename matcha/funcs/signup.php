@@ -72,6 +72,7 @@
 
     } else {
         $_SESSION['error'] = "What the fuck did you just try!!!";
+        header("Location: ../register.php");
     }
     header("Location: ../register.php");
 ?>

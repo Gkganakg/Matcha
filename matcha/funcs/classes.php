@@ -48,12 +48,11 @@
             Your account has been created, you can login with your credentials after you have activated your account by clicking the url below.
             
             Please click this link to activate your account:
-            http://localhost:8080/matcha/funcs/verify.php?token='.$token.'
             http://' .$ip.'verify.php?token='.$token.'
             
             '; // Our message above including the link
                                 
-            $headers = 'From:Gkganakg@matcha.com' . "\r\n"; // Set from headers
+            $headers = 'From:gkganakg@matcha.com' . "\r\n"; // Set from headers
             mail($to, $subject, $message, $headers); // Send our email
         }
 
@@ -131,7 +130,7 @@
                             </li>
                             <li class="nav-item"><a href="logout.php"><span class="glyphicon glyphicon-trash"></span> Logout</a></li>
                             <li class="nav-item">
-                                <form class="navbar-form" type="hidden" action="http://127.0.0.1:8080/matcha/" method="POST">
+                                <form class="navbar-form" type="hidden" action="http://127.0.0.1:8081/matcha/" method="POST">
                                     <div class="input-group add-on">
                                         <input class="form-control" placeholder="Search User" name="search_user" type="text">
                                         <div class="input-group-btn">
@@ -406,21 +405,17 @@
             $users = $query->fetchAll();
 
             foreach ($users as $user){
-                // if(preg_match("/{$username}/i", $user['username']) || preg_match("/{$username}/i", $user['first_name']) || preg_match("/{$username}/i", $user['last_name'])) {
-                //     $suggestedUsers[$i] = $user;
-                //     $i++;
-                // }
-                  if(strcmp(strtolower($username),strtolower($user['username'])) == 0 || 
-
-                 strcmp(strtolower($username),strtolower($user['first_name'])) == 0 ||
-                  strcmp(strtolower($username),strtolower($user['last_name'])) == 0) {
+                
+                if(strcmp(strtolower($username),strtolower($user['username'])) == 0 || strcmp(strtolower($username), strtolower($user['first_name'])) == 0 || strcmp(strtolower($username), strtolower($user['last_name'])) ==0) {
                     $suggestedUsers[$i] = $user;
                     $i++;
-                 }
+                }
+                
             }
 
             $this->dump_data($suggestedUsers, $user_id);
         }
+    
 
         //get ids of friends using friend id
         public function friends_ids($user_id){
@@ -832,8 +827,7 @@
             $query2->execute();
         }
 
-        //get friends in 
-        
+        //get friends in messages
         public function friends_details($friend_ids){
             global $conn;
             $friend_details[0] = 0;
@@ -874,7 +868,7 @@
                             <div class='incoming_msg_img'> <img src='".$pro_pic."' alt='sunil'> </div>
                             <div class='received_msg'>
                                 <div class='received_withd_msg'>
-                                    <p>".$msg['message']."</p>
+                                    <p>".htmlspecialchars($msg['message'])."</p>
                                     <span class='time_date'>".$msg['sent_time']."</span>
                                 </div>
                             </div>
@@ -882,7 +876,7 @@
                 } else {
                     echo "<div class='outgoing_msg'>
                             <div class='sent_msg'>
-                                <p>".$msg['message']."</p>
+                                <p>".htmlspecialchars($msg['message'])."</p>
                                 <span class='time_date'>".$msg['sent_time']."</span>
                             </div>
                         </div>";
@@ -918,7 +912,114 @@
             $stmt->bindParam(2, $user_id);
             $stmt->execute();
         }
+        public function reset_password($email) {
+            global $conn;
+            try{
+               
+                 
+                
+                $pdo = $conn->prepare("SELECT * FROM users WHERE email = ? AND verified = ?");
+                $pdo->execute(array($email, '1'));
+                $all = $pdo->fetch(PDO::FETCH_ASSOC);
+                $found = $pdo->rowCount();
+                
+                if ($found == 1)
+                {
+                    
+              
+                
+                     
+                    $user = $all['username'];
+                    $token  = $all['token'];
+                    $url = $_SERVER['HTTP_HOST'] . str_replace("forgot.php", "", "");
+                   $this->reset_passw($email, $user, $url,$token);
+                    $hashed = hash("whirlpool", $pass);
+                    $_SESSION['er'] = "Check Email to change password";
+                   header('Location: ../login.php');
+                    
+                    exit();
+                }
+                else
+                {
+                    $_SESSION['errr'] = "Email incorrect or not found";
+                   header('Location: ../forgot.php');
+                    exit();
+                }
+            }
+            catch(PDOEXCEPTION $e)
+            {
+                echo "Ttiata";
+                $_SESSION['errr'] = "Something went wrong try again later..";
+                header('Location: ../forgot.php');
+                //exit();
+            }
+        }
+       
+            function reset_passw($mail, $user, $ip,$token)
+            {
+             
+             $to      = $mail; 
+            $subject = 'Create New Password'; 
+            $message = '
+            Your login credentials are as follows:
+            ------------------------
+            Username: '.$user.'
+            Password: '.$pass.'
+            ------------------------ 
+            Please click this link to reset your Password account:
+            http://'.$ip.'/matcha/createPas.php?token='.$token.'
+        
+        
+            '; 
+                                 
+            $headers = 'From:matcha@matcha.com' . "\r\n";
+            mail($to, $subject, $message, $headers); 
+            }
+            function set_password($token,$pass,$cpass){
+                global $conn;
+                if ($pass != $cpass)
+                {
+                    $_SESSION['e'] = "Passwords dont match try again";
+                    header("Location: ../createPas.php");
+                    exit();
+                }
+                if (!preg_match("#[a-zA-Z]+#", $pass))
+                {
+                    $_SESSION['e'] = "Password shoud contain at least Lowercase, Uppercase";
+                    header("Location: ../createPas.php");
+                    exit();
+                }
+        
+            if (strlen($pass) < 4)
+            {
+                $_SESSION['e'] = "Password should contain at least 4 chars";
+                header("Location: ../createPas.php");
+                exit();
+            }
+            $pdo = $conn->prepare("SELECT * FROM users WHERE `token` = ?");
+
+            $pdo->execute(array($token));
+            $all = $pdo->fetch(PDO::FETCH_ASSOC);
+            $found = $pdo->rowCount();
+            $newHash = hash("whirlpool", $cpass); 
+            if($found == 1){
+               
+                $pdo = $conn->prepare("UPDATE users SET `password` = ? WHERE `token` = ?");
+                $pdo->execute(array($newHash, $token));
+                $_SESSION['e'] = "Password Succesfuly changed";
+                header("Location: ../createPas.php");
+               exit();
+
+            }else {
+                $_SESSION['e'] = "Something Went Wrong";
+                header("Location: ../createPas.php");
+                exit();
+            }
+        }
+                       
     }
+       
+    
 
     $p = new FUNCS;
 
