@@ -193,7 +193,7 @@
                     </div>
                         <div class="mastfoot">
 						    <div class="inner">
-						        <p style="color:red;" <?php echo 'align="center"';?>>Matcha Project by Gkganakg Copyright© 2018</p>
+						        <p style="color:red;" <?php echo 'align="center"';?>>Matcha Project by gkganakg Copyright© 2018</p>
 						    </div>
 					    </div>
                 </div>    

@@ -87,7 +87,7 @@ session_start();
 
                             <div class="form-group">
                                 <div class="col-sm-6 col-sm-offset-3">
-                                    <select class="browser-default custom-select" id="loc" style="visibility: display" required>
+                                    <select class="browser-default custom-select" id="loc" style="visibility: hidden" required>
                                         <option value="">Choose your location</option>
                                         <option value="East London, South Africa">East London, South Africa</option>
                                         <option value="Port Elizaberth, South Africa">Port Elizaberth, South Africa
@@ -164,7 +164,7 @@ session_start();
         </div>
         <div class="mastfoot">
             <div class="inner">
-                <p style="color:red;" <?php echo 'align="center"'; ?>>Matcha Project by Gkganakg Copyright© 2018</p>
+                <p style="color:red;" <?php echo 'align="center"'; ?>>Matcha Project by gkganakg Copyright© 2018</p>
             </div>
         </div>
     </div>

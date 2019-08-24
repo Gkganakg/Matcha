@@ -3,9 +3,9 @@ session_start();
 include('config/db.php');
 include('funcs/classes.php');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 if(!isset($_SESSION['id'])){
     header("Location: login.php");
@@ -48,7 +48,7 @@ if(!isset($_SESSION['id'])){
 						<div id="sort" style="border: 1px solid #ccc; box-shadow: 1px 1px 1px #ccc; padding: 10px;" <?php echo 'align="center"';?>>
 							<?php
                                 if(isset($_POST['search']) && !empty($_POST['search_user'])){
-                                    $p->search_user(htmlspecialchars($_POST['search_user']), htmlspecialchars($user_id));
+                                    $p->search_user($_POST['search_user'], $user_id);
                                 }else if (isset($_POST['submit']) && $_POST["submit"] == "selectFilter" && isset($_POST["optradio5"]) || isset($_POST["order"]) == "rate"  || isset($_POST["order"]) == "age"){
 									if ($_POST["optradio5"] == "sortAge" || $_POST["optradio5"] == "sortFame"){
 										$p->filter_age_rate($user_id);
@@ -86,7 +86,7 @@ if(!isset($_SESSION['id'])){
 			</div>
 			<div class="mastfoot">
 				<div class="inner">
-					<p style="color:red;" <?php echo 'align="center";'?>>Matcha Project by Gkganakg Copyright© 2018</p>
+					<p style="color:red;" <?php echo 'align="center";'?>>Matcha Project by gkganakg Copyright© 2018</p>
 				</div>
 			</div>
 		</div>

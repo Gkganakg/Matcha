@@ -15,7 +15,7 @@
         $p->filter_loc_com($user_id);
     }elseif($_SESSION["page"] == "friends"){
         $p->friends($user_id);
-    }
+    } 
 ?>
 
                             <form class="form-group" method="POST" action="#">

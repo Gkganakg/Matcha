@@ -39,7 +39,7 @@
                     <div class="container-fluid">
                         <div class="nav navbar-toggler" id="navbarSupportedContent">
                             <ul class="nav navbar-nav">
-						        <li id="btnlog"><a href="login.php"><i class="fa fa-sign-in" aria-hidden="true"></i><span class="glyphicon glyphicon-user"></span> Log In </a></li>
+						        <li id="btnlog"><a href="login.php"><span class="glyphicon glyphicon-user"></span> Log In </a></li>
 						        <li id="btnsign"><a href="register.php"><span class="glyphicon glyphicon-plus"></span> Register </a></li>
                             </ul>
                         </div>
@@ -69,11 +69,11 @@
                                             <div class="checkbox">
                                                 <label><input type="checkbox" name="special_key"> Keep me logged in</label>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                     <button type="submit" id="loginBtn" name="loginBtn" class="btn btn-danger" value="Log in">Log in <span class="glyphicon glyphicon-user"></span></button>
                                     <br><br>
-                                    <a href="forgot.php" >forgot password</a>
+                                    <a href="forgot.php">forgot Password </a>
                                 </form>
                                 <br>
                                 <?php
@@ -89,9 +89,12 @@
                 </div>
                 <div class="mastfoot">
                     <div class="inner">
-                        <p style="color:red;" <?php echo 'align="center"';?>>Matcha Project by Gkganakg Copyright© 2018</p>
+                        <p style="color:red;" <?php echo 'align="center"';?>>Matcha Project by gkganakg Copyright© 2018</p>
+                        
                     </div>
+                    
                 </div>
+             
             </div>
         </div>
 		<script src="js/jquery.js"></script>
